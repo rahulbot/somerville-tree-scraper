@@ -19,8 +19,8 @@ pip install BeautifulSoup
 Running
 -------
 
-This can take a while, because there are a LOT of trees to query!  So this creates a 
-`cache` directory so you can stop it and start it again.
+This can take a while, because there are a LOT of trees to query!  This creates a 
+`cache` directory so you can stop it and start it again without taxing their servers too much.
 
 ```
 python scrape.py
