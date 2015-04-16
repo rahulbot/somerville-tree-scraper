@@ -1,6 +1,7 @@
 import sys, re, logging, csv, os, urllib2
 import mechanize
 from BeautifulSoup import BeautifulSoup
+import pyproj
 
 #logger = logging.getLogger("mechanize")
 #logger.addHandler(logging.StreamHandler(sys.stdout))
@@ -11,6 +12,10 @@ SITE_URL = BASE_URL + "site_view.cfm?siteID="
 TYPE_STREET_TREES = "street"
 TYPE_PARK_TREES = "park"
 CACHE_DIR = "cache"
+FEET_TO_METERS = 0.3048
+
+# the X/Y co-ordinates are the US state plane for Massachusetts Mainland (in feet)
+state_plane_projection = pyproj.Proj(init="epsg:26986")
 
 # setup the cache
 if not os.path.exists(CACHE_DIR):
@@ -101,12 +106,10 @@ def scrape(type_to_scrape):
 			tree_info['on_street'] = tableRows[7].findAll('td')[1].text
 			tree_info['from_street'] = tableRows[8].findAll('td')[1].text
 			tree_info['to_street'] = tableRows[9].findAll('td')[1].text
-			tree_info['longitude'] = tableRows[10].findAll('td')[1].text
-			tree_info['latitude'] = tableRows[11].findAll('td')[1].text
 			tree_info['facility'] = ""
 			tree_info['facility_name'] = ""
-			tree_info['x'] = ""
-			tree_info['y'] = ""
+			tree_info['x'] = tableRows[10].findAll('td')[1].text
+			tree_info['y'] = tableRows[11].findAll('td')[1].text
 		else:
 			tree_info['number'] = ""
 			tree_info['suffix'] = ""
@@ -116,19 +119,22 @@ def scrape(type_to_scrape):
 			tree_info['on_street'] = ""
 			tree_info['from_street'] = ""
 			tree_info['to_street'] = ""
-			tree_info['longitude'] = ""
-			tree_info['latitude'] = ""
 			tree_info['facility'] = tableRows[1].findAll('td')[1].text
 			tree_info['facility_name'] = tableRows[2].findAll('td')[1].text
 			tree_info['x'] = tableRows[5].findAll('td')[1].text
 			tree_info['y'] = tableRows[6].findAll('td')[1].text
+
+		# convert form state plane to lat/lng
+		lat_lng = state_plane_projection(float(tree_info['x'])*FEET_TO_METERS,float(tree_info['y'])*FEET_TO_METERS,inverse=True)
+		tree_info['longitude'] = lat_lng[0]
+		tree_info['latitude'] = lat_lng[1]
 
 		# grab detailed tree_info
 		tableRows = tables[2].findAll('tr')
 		tree_info['date'] = tableRows[0].findAll('td')[1].text
 		tree_info['remote_id'] = tableRows[1].findAll('td')[1].text
 		tree_info['current_site_id'] = tableRows[2].findAll('td')[1].text
-		tree_info['species'] = tableRows[3].findAll('td')[1].text
+		tree_info['species'] = tableRows[3].findAll('td')[1].text.replace("&nbsp;","").strip()
 		tree_info['dbh'] = tableRows[4].findAll('td')[1].text
 		tree_info['trunks'] = tableRows[5].findAll('td')[1].text
 		tree_info['condition'] = tableRows[6].findAll('td')[1].text

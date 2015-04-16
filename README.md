@@ -1,10 +1,10 @@
 Somerville Tree Audit Scraper
 =============================
 
-Somerville, MA, USA did a tree audit.  The results are posted on a website with public 
-guest login so anyone can see the results.  The information wasn't available in a 
-machine-readable format, so this software scrapes the website and creates a CSV file 
-with all the information about each tree.
+Somerville, MA, USA did a tree audit in the spring of 2009.  The results are posted 
+on a website with public guest login so anyone can see them.  The information 
+wasn't available in a machine-readable format, so I created this software to scrape 
+the website and create a CSV file with all the information about each tree.
 
 Installation
 ------------
@@ -12,8 +12,7 @@ Installation
 Make sure you have Python2.7.  Then install these requirements:
 
 ```
-pip install mechanize
-pip install BeautifulSoup
+pip install -r requirements.pip
 ```
 
 Running
@@ -31,8 +30,9 @@ This will generate a `somerville-tree-details.csv` file in this folder with the 
 History
 -------
 
-In 2011 @Bostonography write a great "blog post":http://bostonography.com/2011/autumn-streets/ 
+In 2011 @Bostonography write a great [blog post](http://bostonography.com/2011/autumn-streets/)
 about data and kindly shared the results of their scraping with me.  I used this in a class I was
-leading, and someone was interested so I wrote this scraper to:
+leading, and someone was interested so I wrote this scraper to also:
  * get the park AND street listings
  * get all the metadata about each tree
+The csv here has all that extra data.
