@@ -1,38 +1,12 @@
-Somerville Tree Audit Scraper
-=============================
+Somerville, MA Tree Data
+========================
 
-Somerville, MA, USA did a tree audit in the spring of 2009.  The results are posted 
-on a website with public guest login so anyone can see them.  The information 
-wasn't available in a machine-readable format, so I created this software to scrape 
-the website and create a CSV file with all the information about each tree.
+This repo contains government-created datasets about trees in Somerville, MA, USA. Data from the two audits I have found are posted here. Unfortunately the data collected isn't quite the same, so tree-to-tree comparison would take some work.
 
-Installation
-------------
+## 2017/2018 audit
 
-Make sure you have Python2.7.  Then install these requirements:
+The results were [posted on the Tree Keeper system](https://somervillema.treekeepersoftware.com) so I was able to select all of them with the rectangle tool and download a CSV directly.
 
-```
-pip install -r requirements.pip
-```
+## 2009 Audit
 
-Running
--------
-
-This can take a while, because there are a LOT of trees to query!  This creates a 
-`cache` directory so you can stop it and start it again without taxing their servers too much.
-
-```
-python scrape.py
-```
-
-This will generate a `somerville-tree-details.csv` file in this folder with the results.
-
-History
--------
-
-In 2011 @Bostonography write a great [blog post](http://bostonography.com/2011/autumn-streets/)
-about data and kindly shared the results of their scraping with me.  I used this in a class I was
-leading, and someone was interested so I wrote this scraper to also:
- * get the park AND street listings
- * get all the metadata about each tree
-The csv here has all that extra data.
+The results were posted on a website with public guest login so anyone can see them.  The information  wasn't available in a machine-readable format, so I created this software to scrape  the website and create a CSV file with all the information about each tree.  This code is archived on the `2009-audit` branch.
